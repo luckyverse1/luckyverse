@@ -3,301 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luckyverse Casino</title>
+    <title>Luckyverse - Social Casino</title>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js"></script>
+    
+    <!-- Add your styles and other resources here -->
     <style>
-        /* Reset and Basic Styling */
-        * {
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1f1f1f;
+            color: white;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            overflow-x: hidden;
+        /* Add your custom styles here */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            color: #fff;
-        }
-
-        /* Full-Screen Video Background */
-        .background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .background video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Overlay for better text contrast */
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
-        }
-
-        /* Header Section */
-        header {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 1200px;
-            padding: 0 20px;
-        }
-
-        .logo img {
-            height: 80px; /* Adjusted for better visibility */
-            width: auto;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-        }
-
-        .nav-links li {
-            margin-left: 30px;
-            position: relative;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: 500;
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-            letter-spacing: 0.8px;
-        }
-
-        .nav-links a:hover {
-            color: #f0942c; /* Accent color */
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #f0942c;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-
-        /* Hero Section */
-        .hero {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             text-align: center;
-            z-index: 10;
-            max-width: 900px;
-            width: 80%;
         }
-
-        .hero h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 4rem;
-            margin-bottom: 15px;
-            text-shadow: 0 0 30px rgba(255, 148, 44, 0.6), 0 0 20px rgba(255, 148, 44, 0.3);
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.9); /* Subtle color */
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.75); /* Subtle contrast */
-            margin-bottom: 20px;
-            font-weight: 300;
-        }
-
-        /* Navigation Bar Sticky */
-        .sticky-nav {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            background-color: rgba(0, 0, 0, 0.7); /* Slightly transparent */
-            padding: 10px 0;
-        }
-
-        /* Modal for Sign In/Sign Up */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background-color: rgba(0, 0, 0, 0.7);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #333;
             padding: 20px;
-            border-radius: 8px;
-            max-width: 400px;
-            width: 100%;
+            border-radius: 10px;
         }
-
-        .modal input {
+        .modal-content {
+            background-color: #2c2c2c;
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: left;
+        }
+        input[type="email"], input[type="password"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 2px solid #f0942c;
-            background-color: #222;
+            background-color: #333;
+            border: 1px solid #555;
             color: white;
             border-radius: 5px;
-            font-size: 1rem;
         }
-
-        .modal button {
+        button {
             width: 100%;
             padding: 10px;
-            background-color: #f0942c;
-            border: none;
+            background-color: #28a745;
             color: white;
+            border: none;
             border-radius: 5px;
-            font-size: 1.1rem;
             cursor: pointer;
         }
-
-        .modal button:hover {
-            background-color: #f28a0c;
+        button:hover {
+            background-color: #218838;
         }
-
-        /* Close Button */
+        .google-signin-btn {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .google-signin-btn:hover {
+            background-color: #357ae8;
+        }
         .close {
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 2rem;
-            color: #f0942c;
+            color: white;
+            font-size: 30px;
             cursor: pointer;
         }
-
+        .auth-links {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+        }
+        .auth-links a {
+            color: #28a745;
+            text-decoration: none;
+        }
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Full-Screen Video Background -->
-    <div class="background">
-        <video autoplay loop muted>
-            <source src="https://cdn.pixabay.com/video/2024/06/07/215698_large.mp4" type="video/mp4">
-            Your browser does not support the video tag. Please upgrade your browser.
-        </video>
+<!-- Content Area -->
+<div class="container">
+    <div>
+        <h1>Welcome to Luckyverse</h1>
+        <button onclick="openModal('loginModal')">Login</button>
+        <button onclick="openModal('signupModal')">Sign Up</button>
     </div>
+</div>
 
-    <!-- Overlay for Darker Text Contrast -->
-    <div class="overlay"></div>
-
-    <!-- Header Section -->
-    <header>
-        <div class="logo">
-            <!-- Updated Logo with Correct Link -->
-            <img src="https://i.postimg.cc/W1NQg1zG/Untitled-removebg-preview.png" alt="Luckyverse Logo">
-        </div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#">Games</a></li>
-                <li><a href="#">Support</a></li>
-                <li><a href="#" id="signin-btn">Sign In</a></li>
-                <li><a href="#" id="signup-btn">Sign Up</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Luckyverse Casino</h1>
-        <p>Discover a Universe of Endless Possibilities and Cosmic Wins</p>
-    </section>
-
-    <!-- Sign In / Sign Up Modal -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <span class="close" id="close-btn">&times;</span>
-            <h2 id="modal-title">Sign In</h2>
-            <form id="form">
-                <input type="text" id="username" placeholder="Enter Username" required>
-                <input type="password" id="password" placeholder="Enter Password" required>
-                <button type="submit">Submit</button>
-            </form>
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('loginModal')">&times;</span>
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Enter your email">
+        <input type="password" id="loginPassword" placeholder="Enter your password">
+        <button onclick="login()">Login</button>
+        <button class="google-signin-btn" onclick="googleLogin()">Login with Google</button>
+        <div class="auth-links">
+            <a href="#" onclick="openModal('signupModal')">Don't have an account? Sign up</a>
         </div>
     </div>
+</div>
 
-    <script>
-        // Modal functionality
-        const modal = document.getElementById('modal');
-        const signinBtn = document.getElementById('signin-btn');
-        const signupBtn = document.getElementById('signup-btn');
-        const closeBtn = document.getElementById('close-btn');
-        const modalTitle = document.getElementById('modal-title');
+<!-- Sign-Up Modal -->
+<div id="signupModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('signupModal')">&times;</span>
+        <h2>Sign Up</h2>
+        <input type="email" id="signupEmail" placeholder="Enter your email">
+        <input type="password" id="signupPassword" placeholder="Enter your password">
+        <button onclick="signUp()">Sign Up</button>
+        <button class="google-signin-btn" onclick="googleLogin()">Sign Up with Google</button>
+        <div class="auth-links">
+            <a href="#" onclick="openModal('loginModal')">Already have an account? Login</a>
+        </div>
+    </div>
+</div>
 
-        // Open modal for Sign In
-        signinBtn.addEventListener('click', () => {
-            modal.style.display = 'flex';
-            modalTitle.textContent = 'Sign In';
-        });
+<!-- Firebase Configuration -->
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBw319zx-zlsYmumawPkgiLdAMTFCTt1go",
+        authDomain: "luckyverse-cf9b8.firebaseapp.com",
+        projectId: "luckyverse-cf9b8",
+        storageBucket: "luckyverse-cf9b8.firebasestorage.app",
+        messagingSenderId: "826132786729",
+        appId: "1:826132786729:web:eea8a9421ac5e150383638"
+    };
+    
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
 
-        // Open modal for Sign Up
-        signupBtn.addEventListener('click', () => {
-            modal.style.display = 'flex';
-            modalTitle.textContent = 'Sign Up';
-        });
+    // Open Modal
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'block';
+    }
 
-        // Close modal
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
+    // Close Modal
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
 
-        // Submit form (fake functionality for now)
-        const form = document.getElementById('form');
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            alert(`Username: ${username}, Password: ${password}`);
-            modal.style.display = 'none'; // Close modal after submission
-        });
+    // Sign Up Function
+    function signUp() {
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
 
-        // Close modal if clicked outside of it
-        window.onclick = (event) => {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        };
-    </script>
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                alert('Sign up successful!');
+                closeModal('signupModal');
+            })
+            .catch((error) => {
+                alert(error.message);
+            });
+    }
+
+    // Login Function
+    function login() {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                alert('Login successful!');
+                closeModal('loginModal');
+            })
+            .catch((error) => {
+                alert(error.message);
+            });
+    }
+
+    // Google Login/SignUp Function
+    function googleLogin() {
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                const user = result.user;
+                alert('Google login successful! Welcome ' + user.displayName);
+                closeModal('loginModal');
+                closeModal('signupModal');
+            })
+            .catch((error) => {
+                alert(error.message);
+            });
+    }
+
+    // Sign Out Function
+    function signOut() {
+        auth.signOut()
+            .then(() => {
+                alert('Signed out successfully!');
+            })
+            .catch((error) => {
+                alert(error.message);
+            });
+    }
+
+    // Monitor Auth State Changes
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in
+            console.log('User signed in: ', user.email);
+        } else {
+            // No user is signed in
+            console.log('No user signed in');
+        }
+    });
+</script>
 
 </body>
 </html>
