@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luckyverse Casino</title>
+    <style>
+        /* Reset and Basic Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+            height: 100vh;
+            color: #fff;
+        }
+
+        /* Full-Screen Video Background */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Overlay for better text contrast */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        /* Header Section */
+        header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .logo img {
+            height: 80px; /* Adjusted for better visibility */
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+            position: relative;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-links a:hover {
+            color: #f0942c; /* Accent color */
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #f0942c;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            max-width: 900px;
+            width: 80%;
+        }
+
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(255, 148, 44, 0.6), 0 0 20px rgba(255, 148, 44, 0.3);
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.9); /* Subtle color */
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.75); /* Subtle contrast */
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        /* Navigation Bar Sticky */
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background-color: rgba(0, 0, 0, 0.7); /* Slightly transparent */
+            padding: 10px 0;
+        }
+
+        /* Modal for Sign In/Sign Up */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #f0942c;
+            background-color: #222;
+            color: white;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .modal button {
+            width: 100%;
+            padding: 10px;
+            background-color: #f0942c;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background-color: #f28a0c;
+        }
+
+        /* Close Button */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2rem;
+            color: #f0942c;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Full-Screen Video Background -->
+    <div class="background">
+        <video autoplay loop muted>
+            <source src="https://cdn.pixabay.com/video/2024/06/07/215698_large.mp4" type="video/mp4">
+            Your browser does not support the video tag. Please upgrade your browser.
+        </video>
+    </div>
+
+    <!-- Overlay for Darker Text Contrast -->
+    <div class="overlay"></div>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <!-- Updated Logo with Correct Link -->
+            <img src="https://i.postimg.cc/W1NQg1zG/Untitled-removebg-preview.png" alt="Luckyverse Logo">
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#">Games</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#" id="signin-btn">Sign In</a></li>
+                <li><a href="#" id="signup-btn">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Luckyverse Casino</h1>
+        <p>Discover a Universe of Endless Possibilities and Cosmic Wins</p>
+    </section>
+
+    <!-- Sign In / Sign Up Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close" id="close-btn">&times;</span>
+            <h2 id="modal-title">Sign In</h2>
+            <form id="form">
+                <input type="text" id="username" placeholder="Enter Username" required>
+                <input type="password" id="password" placeholder="Enter Password" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById('modal');
+        const signinBtn = document.getElementById('signin-btn');
+        const signupBtn = document.getElementById('signup-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const modalTitle = document.getElementById('modal-title');
+
+        // Open modal for Sign In
+        signinBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+            modalTitle.textContent = 'Sign In';
+        });
+
+        // Open modal for Sign Up
+        signupBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+            modalTitle.textContent = 'Sign Up';
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Submit form (fake functionality for now)
+        const form = document.getElementById('form');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            alert(`Username: ${username}, Password: ${password}`);
+            modal.style.display = 'none'; // Close modal after submission
+        });
+
+        // Close modal if clicked outside of it
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
+    </script>
+
+</body>
+</html>
