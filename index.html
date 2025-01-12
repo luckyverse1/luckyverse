@@ -8,8 +8,7 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js"></script>
-    
-    <!-- Add your styles and other resources here -->
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -17,25 +16,82 @@
             color: white;
             margin: 0;
             padding: 0;
+            background: url('https://cdn.pixabay.com/video/2024/06/07/215698_large.mp4') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
         }
-        /* Add your custom styles here */
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            z-index: 1000;
+        }
+
+        .logo {
+            height: 50px;
+            margin-left: 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #fff;
+            font-size: 18px;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+
+        .navbar a:hover {
+            color: #ffcc00;
+        }
+
         .container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100%;
             text-align: center;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
         }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
         .modal {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
         }
+
         .modal-content {
             background-color: #2c2c2c;
             color: white;
@@ -43,6 +99,7 @@
             border-radius: 8px;
             text-align: left;
         }
+
         input[type="email"], input[type="password"] {
             width: 100%;
             padding: 10px;
@@ -52,18 +109,7 @@
             color: white;
             border-radius: 5px;
         }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
+
         .google-signin-btn {
             background-color: #4285F4;
             color: white;
@@ -74,10 +120,13 @@
             font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
+            margin-bottom: 10px;
         }
+
         .google-signin-btn:hover {
             background-color: #357ae8;
         }
+
         .close {
             position: absolute;
             top: 10px;
@@ -86,15 +135,18 @@
             font-size: 30px;
             cursor: pointer;
         }
+
         .auth-links {
             display: flex;
             justify-content: space-between;
             padding-top: 10px;
         }
+
         .auth-links a {
             color: #28a745;
             text-decoration: none;
         }
+
         .auth-links a:hover {
             text-decoration: underline;
         }
@@ -102,13 +154,25 @@
 </head>
 <body>
 
-<!-- Content Area -->
-<div class="container">
-    <div>
-        <h1>Welcome to Luckyverse</h1>
-        <button onclick="openModal('loginModal')">Login</button>
-        <button onclick="openModal('signupModal')">Sign Up</button>
+<!-- Header -->
+<header>
+    <div class="navbar">
+        <img class="logo" src="https://i.postimg.cc/W1NQg1zG/Untitled-removebg-preview.png" alt="Luckyverse Logo">
+        <div>
+            <a href="#">Games</a>
+            <a href="#">Leaderboards</a>
+            <a href="#">Help</a>
+            <a href="#" onclick="openModal('loginModal')">Login</a>
+            <a href="#" onclick="openModal('signupModal')">Sign Up</a>
+        </div>
     </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <h1>Welcome to Luckyverse</h1>
+    <button class="btn" onclick="openModal('loginModal')">Login</button>
+    <button class="btn" onclick="openModal('signupModal')">Sign Up</button>
 </div>
 
 <!-- Login Modal -->
@@ -118,7 +182,7 @@
         <h2>Login</h2>
         <input type="email" id="loginEmail" placeholder="Enter your email">
         <input type="password" id="loginPassword" placeholder="Enter your password">
-        <button onclick="login()">Login</button>
+        <button class="btn" onclick="login()">Login</button>
         <button class="google-signin-btn" onclick="googleLogin()">Login with Google</button>
         <div class="auth-links">
             <a href="#" onclick="openModal('signupModal')">Don't have an account? Sign up</a>
@@ -133,7 +197,7 @@
         <h2>Sign Up</h2>
         <input type="email" id="signupEmail" placeholder="Enter your email">
         <input type="password" id="signupPassword" placeholder="Enter your password">
-        <button onclick="signUp()">Sign Up</button>
+        <button class="btn" onclick="signUp()">Sign Up</button>
         <button class="google-signin-btn" onclick="googleLogin()">Sign Up with Google</button>
         <div class="auth-links">
             <a href="#" onclick="openModal('loginModal')">Already have an account? Login</a>
@@ -151,7 +215,7 @@
         messagingSenderId: "826132786729",
         appId: "1:826132786729:web:eea8a9421ac5e150383638"
     };
-    
+
     // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
@@ -211,24 +275,11 @@
             });
     }
 
-    // Sign Out Function
-    function signOut() {
-        auth.signOut()
-            .then(() => {
-                alert('Signed out successfully!');
-            })
-            .catch((error) => {
-                alert(error.message);
-            });
-    }
-
     // Monitor Auth State Changes
     auth.onAuthStateChanged((user) => {
         if (user) {
-            // User is signed in
             console.log('User signed in: ', user.email);
         } else {
-            // No user is signed in
             console.log('No user signed in');
         }
     });
